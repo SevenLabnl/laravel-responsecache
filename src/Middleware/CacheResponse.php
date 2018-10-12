@@ -6,9 +6,17 @@ use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use SevenLab\ResponseCache\ResponseSerializer;
 
 class CacheResponse
 {
+    protected $responseSerializer;
+
+    public function __construct(ResponseSerializer $responseSerializer)
+    {
+        $this->responseSerializer = $responseSerializer;
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -23,30 +31,29 @@ class CacheResponse
             $route = $request->route();
             $user  = $request->user();
 
-            if ($route && $user && $request->isMethod('get')) {
+            if ($route && $request->isMethod('get')) {
                 $routeName = $route->getName();
                 $routeAction = $route->getActionName();
                 $routeTag = empty($routeName) ? $routeAction : $routeName;
 
-                $tags = [
+                $cacheStore = Cache::tags([
                     config('responsecache.tag'),
                     $routeTag,
-                ];
-                
+                ]);
+
+                $key = isset($user, $user->id) ? $user->id : '?';
                 $key = md5(
-                    sprintf('%s-%s', $user->id, $request->getRequestUri())
+                    sprintf('%s-%s', $key, $request->getRequestUri())
                 );
 
-                $cacheStore = Cache::tags($tags);
-
                 if ($cacheStore->has($key)) {
-                    return $cacheStore->get($key);
+                    return $this->responseSerializer->unserialize($cacheStore->get($key));
                 } else {
                     $response = $next($request);
 
                     if ($response->isSuccessful()) {
                         $response->header('X-Cached-On', Carbon::now('UTC')->format('D, d M Y H:i:s').' GMT');
-                        $cacheStore->put($key, $minutes, $response);
+                        $cacheStore->put($key, $this->responseSerializer->serialize($response), $minutes);
                     }
 
                     return $response;
