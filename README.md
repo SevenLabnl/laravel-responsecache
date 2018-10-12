@@ -45,8 +45,8 @@ And finally you should install the provided middlewares in the HTTP kernel (`app
 
 protected $routeMiddleware = [
     ...
-    'cacheResponse' => \SevenLab\ResponseCache\Middlewares\CacheResponse::class,
-    'doNotCacheResponse' => \SevenLab\ResponseCache\Middlewares\DoNotCacheResponse::class,
+    'cacheResponse' => \SevenLab\ResponseCache\Middleware\CacheResponse::class,
+    'doNotCacheResponse' => \SevenLab\ResponseCache\Middleware\DoNotCacheResponse::class,
 ];
 
 ...

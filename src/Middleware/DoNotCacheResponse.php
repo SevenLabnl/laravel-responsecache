@@ -1,9 +1,8 @@
 <?php
 
-namespace SevenLab\ResponseCache\Middlewares;
+namespace SevenLab\ResponseCache\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 
 class DoNotCacheResponse
 {
@@ -15,7 +14,7 @@ class DoNotCacheResponse
      *
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle($request, Closure $next)
     {
         $request->attributes->add(['responsecache.doNotCache' => true]);
 
