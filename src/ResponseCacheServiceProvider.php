@@ -16,6 +16,8 @@ class ResponseCacheServiceProvider extends ServiceProvider
             __DIR__.'/../config/responsecache.php' => config_path('responsecache.php'),
         ], 'config');
 
+        $this->app->singleton('responsecache', ResponseCache::class);
+
         if ($this->app->runningInConsole()) {
             $this->commands([
                 Clear::class,
