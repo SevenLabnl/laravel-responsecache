@@ -1,3 +1,7 @@
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/7Lab/laravel-responsecache.svg?style=flat-square)](https://packagist.org/packages/7Lab/laravel-responsecache)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Total Downloads](https://img.shields.io/packagist/dt/7Lab/laravel-responsecache.svg?style=flat-square)](https://packagist.org/packages/7Lab/laravel-responsecache)
+
 # Cache responses
 This Laravel package can cache an entire response. By default it will cache all successful GET-requests for a week. This could potentially speed up the response quite considerably.
 
