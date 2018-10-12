@@ -23,10 +23,15 @@ class CacheResponse
             $user  = $request->user();
 
             if ($route && $user && $request->isMethod('get')) {
+                $routeName = $route->getName();
+                $routeAction = $route->getActionName();
+                $routeTag = empty($routeName) ? $routeAction : $routeName;
+
                 $tags = [
                     config('responsecache.tag'),
-                    $route->getName(),
+                    $routeTag,
                 ];
+                
                 $key = md5(
                     sprintf('%s-%s', $user->id, $request->getRequestUri())
                 );
