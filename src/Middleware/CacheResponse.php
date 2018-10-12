@@ -18,7 +18,7 @@ class CacheResponse
      */
     public function handle($request, Closure $next, $minutes = 60 * 24 * 7)
     {
-        if ($this->enabled($request)) {
+        if ($this->shouldCache($request)) {
             $route = $request->route();
             $user  = $request->user();
 
@@ -51,8 +51,29 @@ class CacheResponse
         return $next($request);
     }
 
-    private function enabled(Request $request): bool
+    private function shouldCache(Request $request)
     {
-        return config('responsecache.enabled') && $request->attributes->has('responsecache.doNotCache') === false;
+        return $this->isEnabled()
+            && $this->isRunningInConsole() === false
+            && $this->doNotCache($request) === false;
+    }
+
+    private function isEnabled(): bool
+    {
+        return config('responsecache.enabled');
+    }
+
+    private function isRunningInConsole(): bool
+    {
+        if (app()->environment('testing')) {
+            return false;
+        }
+
+        return app()->runningInConsole();
+    }
+
+    private function doNotCache(Request $request): bool
+    {
+        return $request->attributes->has('responsecache.doNotCache');
     }
 }

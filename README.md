@@ -1,5 +1,4 @@
 # Cache responses
-
 This Laravel package can cache an entire response. By default it will cache all successful GET-requests for a week. This could potentially speed up the response quite considerably.
 
 So the first time a request comes in the package will save the response before sending it to the users. When the same request comes in again we're not going through the entire application but just respond with the saved response.
@@ -7,9 +6,7 @@ So the first time a request comes in the package will save the response before s
 The package is based on [spatie/laravel-responsecache](https://github.com/spatie/laravel-responsecache) but uses the defined [route names](https://laravel.com/docs/routing#named-routes) so the cached responses can easily be cleared without having to clear the whole cache.
 
 ## Installation
-
 You can install the package via Composer:
-
 ```bash
 composer require 7Lab/laravel-responsecache
 ```
@@ -22,7 +19,6 @@ php artisan vendor:publish --provider="SevenLab\ResponseCache\ResponseCacheServi
 ```
 
 This is the contents of the published config file (`config/responsecache.php`):
-
 ```php
 return [
 
@@ -40,7 +36,6 @@ return [
 ```
 
 And finally you should install the provided middlewares in the HTTP kernel (`app/Http/Kernel.php`). 
-
 ```php
 ...
 
@@ -54,10 +49,53 @@ protected $routeMiddleware = [
 ```
 
 ## Usage
+By default it will cache all successful GET-requests for a week. Logged in users will each have their own separate cache.
 
-TODO
+### Caching specific routes
+When using the route middleware you can specify the number of minutes these routes should be cached:
+```php
+// cache this route for 5 minutes
+Route::get('/my-special-snowflake', 'SnowflakeController@index')->middleware('cacheResponse:5');
+
+// cache all these routes for 10 minutes
+Route::group(function() {
+   Route::get('/another-special-snowflake', 'AnotherSnowflakeController@index');
+   
+   Route::get('/yet-another-special-snowflake', 'YetAnotherSnowflakeController@index');
+})->middleware('cacheResponse:10');
+```
+
+### Preventing a route from being cached
+Requests can be ignored by using the `doNotCacheResponse`-middleware. This middleware [can be assigned to routes and controllers](http://laravel.com/docs/master/controllers#controller-middleware).
+
+Using the middleware on a route:
+```php
+Route::get('/auth/logout', 'AuthController@getLogout')->middleware('doNotCacheResponse');
+```
+
+Alternatively you can add the middleware to a controller:
+```php
+class AuthController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('doNotCacheResponse', ['only' => ['getLogout']]);
+    }
+}
+```
+
+### Clearing the cache
+The entire cache can be cleared with:
+```php
+ResponseCache::clear();
+```
+This will clear everything from the cache store specified in the config-file (`config/cache.php`) with the tag specified in the responsecache-file (`config/responsecache.php`).
+
+The same can be accomplished by issuing this artisan command:
+```bash
+php artisan responsecache:clear
+```
 
 ## Credits
-
 - [Joey Houtenbos](https://github.com/JoeyHoutenbos)
 - [Freek Van der Herten](https://github.com/freekmurze)
