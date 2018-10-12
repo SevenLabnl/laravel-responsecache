@@ -14,14 +14,14 @@ class ResponseCache
     /**
      * @deprecated Use the new clear method, this is just an alias.
      */
-    public function flush()
+    public function flush(): bool
     {
-        $this->clear();
+        return $this->clear();
     }
 
-    public function clear()
+    public function clear(): bool
     {
-        Cache::tags(
+        return Cache::tags(
             config('responsecache.tag')
         )->flush();
     }

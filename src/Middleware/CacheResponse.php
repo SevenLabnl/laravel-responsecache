@@ -16,28 +16,43 @@ class CacheResponse
      * @param  DateTimeInterface|DateInterval|float|int  $minutes
      * @return mixed
      */
-    public function handle($request, Closure $next, $minutes = 1440)
+    public function handle($request, Closure $next, $minutes = 60 * 24 * 7)
     {
-        $route = $request->route();
-        $user  = $request->user();
+        if ($this->enabled($request)) {
+            $route = $request->route();
+            $user  = $request->user();
 
-        if ($route && $user && $request->isMethod('get')) {
-            $tags = [
-                config('responsecache.tag'),
-                $route->getName(),
-            ];
-            $key = md5(
-                sprintf('%s-%s', $user->id, $request->getRequestUri())
-            );
+            if ($route && $user && $request->isMethod('get')) {
+                $tags = [
+                    config('responsecache.tag'),
+                    $route->getName(),
+                ];
+                $key = md5(
+                    sprintf('%s-%s', $user->id, $request->getRequestUri())
+                );
 
-            return Cache::tags($tags)->remember($key, $minutes, function () use ($request, $next) {
-                $response = $next($request);
-                $response->header('X-Cached-On', Carbon::now('UTC')->format('D, d M Y H:i:s').' GMT');
+                $cacheStore = Cache::tags($tags);
 
-                return $response;
-            });
+                if ($cacheStore->has($key)) {
+                    return $cacheStore->get($key);
+                } else {
+                    $response = $next($request);
+
+                    if ($response->isSuccessful()) {
+                        $response->header('X-Cached-On', Carbon::now('UTC')->format('D, d M Y H:i:s').' GMT');
+                        $cacheStore->put($key, $minutes, $response);
+                    }
+
+                    return $response;
+                }
+            }
         }
 
         return $next($request);
+    }
+
+    private function enabled(Request $request): bool
+    {
+        return config('responsecache.enabled') && $request->attributes->has('responsecache.doNotCache') === false;
     }
 }

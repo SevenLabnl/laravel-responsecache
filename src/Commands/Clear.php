@@ -3,6 +3,7 @@
 namespace SevenLab\ResponseCache\Commands;
 
 use Illuminate\Console\Command;
+use SevenLab\ResponseCache\Facades\ResponseCache;
 
 class Clear extends Command
 {

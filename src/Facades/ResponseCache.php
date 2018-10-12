@@ -8,7 +8,7 @@ class ResponseCache extends Facade
     /**
      * Get the registered name of the component.
      *
-     * @see \Spatie\ResponseCache\ResponseCache
+     * @see \SevenLab\ResponseCache\ResponseCache
      *
      * @return string
      */
