@@ -2,13 +2,20 @@
 
 namespace SevenLab\ResponseCache;
 
+use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Facades\Cache;
 
 class ResponseCache
 {
-    public function __construct()
+    /**
+     * Remove items with specified tag from the cache.
+     *
+     * @param  array|mixed  $tags
+     * @return bool
+     */
+    public function forget($tags): bool
     {
-        //
+        return Cache::tags($tags)->flush();
     }
 
     /**

@@ -4,6 +4,7 @@ namespace SevenLab\ResponseCache;
 
 use Illuminate\Support\ServiceProvider;
 use SevenLab\ResponseCache\Commands\Clear;
+use SevenLab\ResponseCache\Commands\Forget;
 
 class ResponseCacheServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,7 @@ class ResponseCacheServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 Clear::class,
+                Forget::class,
             ]);
         }
     }

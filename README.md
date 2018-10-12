@@ -74,7 +74,7 @@ Requests can be ignored by using the `doNotCacheResponse`-middleware. This middl
 
 Using the middleware on a route:
 ```php
-Route::get('/auth/logout', 'AuthController@getLogout')->middleware('doNotCacheResponse');
+Route::get('/auth/logout', 'AuthController@getLogout')->name('auth.logout')->middleware('doNotCacheResponse');
 ```
 
 Alternatively you can add the middleware to a controller:
@@ -88,7 +88,18 @@ class AuthController extends Controller
 }
 ```
 
-### Clearing the cache
+### Clearing specific routes
+Specific routes can be cleared with:
+```php
+ResponseCache::forget(['auth.logout']);
+```
+
+The same can be accomplished by issuing this artisan command:
+```bash
+php artisan responsecache:forget auth.logout
+```
+
+### Clearing all routes
 The entire cache can be cleared with:
 ```php
 ResponseCache::clear();
