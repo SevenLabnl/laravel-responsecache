@@ -114,3 +114,4 @@ php artisan responsecache:clear
 ## Credits
 - [Joey Houtenbos](https://github.com/JoeyHoutenbos)
 - [Freek Van der Herten](https://github.com/freekmurze)
+- [All Contributors](https://github.com/7lab/laravel-responsecache/contributors)
