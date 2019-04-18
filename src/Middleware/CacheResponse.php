@@ -22,10 +22,10 @@ class CacheResponse
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  DateTimeInterface|DateInterval|float|int  $minutes
+     * @param  int  $minutes
      * @return mixed
      */
-    public function handle($request, Closure $next, $minutes = 60 * 24 * 7)
+    public function handle($request, Closure $next, int $minutes = 60 * 24 * 7)
     {
         if ($this->shouldCache($request)) {
             $route = $request->route();
@@ -53,7 +53,7 @@ class CacheResponse
 
                     if ($response->isSuccessful()) {
                         $response->header('X-Cached-On', Carbon::now('UTC')->format('D, d M Y H:i:s').' GMT');
-                        $cacheStore->put($key, $this->responseSerializer->serialize($response), $minutes);
+                        $cacheStore->put($key, $this->responseSerializer->serialize($response), now()->addMinutes($minutes));
                     }
 
                     return $response;
