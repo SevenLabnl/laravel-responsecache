@@ -29,7 +29,6 @@ class CacheResponse
     {
         if ($this->shouldCache($request)) {
             $route = $request->route();
-            $user  = $request->user();
 
             if ($route && $request->isMethod('get')) {
                 $routeName = $route->getName();
@@ -41,10 +40,7 @@ class CacheResponse
                     $routeTag,
                 ]);
 
-                $key = isset($user, $user->id) ? $user->id : '?';
-                $key = md5(
-                    sprintf('%s-%s', $key, $request->getRequestUri())
-                );
+                $key = $this->getCacheKey($request);
 
                 if ($cacheStore->has($key)) {
                     return $this->responseSerializer->unserialize($cacheStore->get($key));
@@ -62,6 +58,16 @@ class CacheResponse
         }
 
         return $next($request);
+    }
+
+    public function getCacheKey($request)
+    {
+        $user  = $request->user();
+        $key = isset($user, $user->id) ? $user->id : '?';
+
+        return md5(
+            sprintf('%s-%s', $key, $request->getRequestUri())
+        );
     }
 
     private function shouldCache(Request $request)
