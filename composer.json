@@ -1,21 +1,21 @@
 {
-    "name": "7lab/laravel-responsecache",
+    "name": "sevenlab/laravel-responsecache",
     "description": "Cache responses in a Laravel application",
     "keywords": [
-        "7lab",
+        "sevenlab",
         "laravel-responsecache",
         "laravel",
         "responsecache",
         "response",
         "cache"
     ],
-    "homepage": "https://github.com/7lab/laravel-responsecache",
+    "homepage": "https://github.com/sevenlabnl/laravel-responsecache",
     "license": "MIT",
     "authors": [
         {
             "name": "Joey Houtenbos",
-            "email": "joey@7lab.nl",
-            "homepage": "https://www.7lab.nl",
+            "email": "joey@sevenlab.nl",
+            "homepage": "https://www.sevenlab.nl",
             "role": "Developer"
         }
     ],

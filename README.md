@@ -1,6 +1,6 @@
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/7Lab/laravel-responsecache.svg?style=flat-square)](https://packagist.org/packages/7Lab/laravel-responsecache)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/SevenLab/laravel-responsecache.svg?style=flat-square)](https://packagist.org/packages/SevenLab/laravel-responsecache)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Total Downloads](https://img.shields.io/packagist/dt/7Lab/laravel-responsecache.svg?style=flat-square)](https://packagist.org/packages/7Lab/laravel-responsecache)
+[![Total Downloads](https://img.shields.io/packagist/dt/SevenLab/laravel-responsecache.svg?style=flat-square)](https://packagist.org/packages/SevenLab/laravel-responsecache)
 
 # Cache responses
 This Laravel package can cache an entire response. By default it will cache all successful GET-requests for a week. This could potentially speed up the response quite considerably.
@@ -12,7 +12,7 @@ The package is based on [spatie/laravel-responsecache](https://github.com/spatie
 ## Installation
 You can install the package via Composer:
 ```bash
-composer require 7Lab/laravel-responsecache
+composer require sevenlab/laravel-responsecache
 ```
 
 The package will automatically register itself.
@@ -114,4 +114,4 @@ php artisan responsecache:clear
 ## Credits
 - [Joey Houtenbos](https://github.com/JoeyHoutenbos)
 - [Freek Van der Herten](https://github.com/freekmurze)
-- [All Contributors](https://github.com/7lab/laravel-responsecache/contributors)
+- [All Contributors](https://github.com/SevenLabnl/laravel-responsecache/contributors)
